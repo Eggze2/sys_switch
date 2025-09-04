@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sys-switch"
+version = "0.1.0"
+description = "Cross-platform next-boot OS switcher (Ubuntu/Windows) with PySide6 UI"
+authors = [{ name = "you" }]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["PySide6>=6.5", "psutil>=5.9"]
+
+[project.scripts]
+sys-switch = "sys_switch.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"sys_switch" = ["py.typed"]
