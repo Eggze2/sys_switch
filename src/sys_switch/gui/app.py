@@ -4,7 +4,7 @@ import platform
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QListWidget, QListWidgetItem,
-    QPushButton, QMessageBox, QHBoxLayout, QTextEdit
+    QPushButton, QMessageBox, QHBoxLayout, QTextEdit, QCheckBox
 )
 
 from sys_switch.platforms.common import current_platform
@@ -21,7 +21,7 @@ class BootSwitchApp(QWidget):
 
         self.platform = current_platform()
         if self.platform == 'Windows':
-            self.manager = WindowsBootManager()
+            self.manager = WindowsBootManager(show_recovery=False)  # 默认隐藏恢复环境
         else:
             self.manager = LinuxBootManager()
 
@@ -31,6 +31,13 @@ class BootSwitchApp(QWidget):
     def _build_ui(self):
         layout = QVBoxLayout(self)
         layout.addWidget(QLabel(f'当前平台: {self.platform}'))
+
+        # 添加恢复环境显示选项（仅 Windows）
+        if self.platform == 'Windows':
+            self.show_recovery_cb = QCheckBox('显示 Windows 恢复环境条目')
+            self.show_recovery_cb.setChecked(False)  # 默认隐藏
+            self.show_recovery_cb.stateChanged.connect(self.on_show_recovery_changed)
+            layout.addWidget(self.show_recovery_cb)
 
         self.list = QListWidget()
         layout.addWidget(self.list)
@@ -52,6 +59,13 @@ class BootSwitchApp(QWidget):
         self.btn_refresh.clicked.connect(self.refresh)
         self.btn_apply.clicked.connect(self.apply_selection)
         self.btn_reboot.clicked.connect(self.reboot_now)
+
+    def on_show_recovery_changed(self):
+        """当恢复环境显示选项改变时重新创建管理器并刷新"""
+        if self.platform == 'Windows':
+            show_recovery = self.show_recovery_cb.isChecked()
+            self.manager = WindowsBootManager(show_recovery=show_recovery)
+            self.refresh()
 
     def log_line(self, text: str):
         self.log.append(text)

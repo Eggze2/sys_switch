@@ -4,7 +4,7 @@
 
 ## 使用 uv 管理环境（推荐）
 
-前置：已安装 uv（`uv --version` 可检查），未安装可参考 https://docs.astral.sh/uv/getting-started/。
+前置：已安装 uv（`uv --version` 可检查），未安装可参考 https://docs.astral.sh/uv/getting-started/ 。
 
 - 安装依赖并创建虚拟环境（锁定到 `.venv`）
 ```bash

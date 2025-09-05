@@ -23,8 +23,21 @@ def which(cmd: str) -> str | None:
     return shutil.which(cmd)
 
 
-def run(cmd: List[str], check: bool = False, shell: bool = False, env: dict | None = None) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd if not shell else ' '.join(cmd), capture_output=True, text=True, check=check, shell=shell, env=env)
+def run(cmd: List[str], check: bool = False, shell: bool = False, env: dict | None = None, hide_window: bool = False) -> subprocess.CompletedProcess:
+    """运行命令，支持隐藏窗口选项"""
+    kwargs = {
+        'capture_output': True,
+        'text': True,
+        'check': check,
+        'shell': shell,
+        'env': env
+    }
+    
+    # 在 Windows 上隐藏窗口
+    if hide_window and platform.system() == 'Windows':
+        kwargs['creationflags'] = subprocess.CREATE_NO_WINDOW
+    
+    return subprocess.run(cmd if not shell else ' '.join(cmd), **kwargs)
 
 
 def current_platform() -> str:
