@@ -1,0 +1,61 @@
+[package]
+name = "sys-switch"
+version = "0.2.0"
+edition = "2021"
+description = "Cross-platform next-boot OS switcher with lightweight GUI"
+authors = ["eggze2"]
+license = "MIT"
+
+[dependencies]
+clap = { version = "*", features = ["derive"] }
+eframe = "*"
+egui = "*"
+anyhow = "*"
+regex = "*"
+serde = { version = "*", features = ["derive"] }
+serde_json = "*"
+encoding_rs = "*"
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "*", features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_System_Shutdown",
+    "Win32_UI_Shell",
+    "Win32_System_Threading",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_System_Console",
+    "Win32_Security_Authorization",
+]}
+wmi = "*"
+
+[target.'cfg(unix)'.dependencies]
+libc = "*"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+
+# To build the .deb: run scripts/build-deb.sh (don't run `cargo deb` directly —
+# the script resizes icons first, which are required by the assets list below).
+[package.metadata.deb]
+maintainer = "eggze2"
+copyright = "2026 eggze2"
+license-file = ["LICENSE"]
+extended-description = """\
+Cross-platform next-boot OS switcher with lightweight GUI.
+Supports UEFI boot manager switching on Linux via efibootmgr,
+with GRUB fallback. Requires root privileges (pkexec)."""
+depends = "$auto, efibootmgr, policykit-1"
+recommends = "grub-common"
+section = "admin"
+priority = "optional"
+maintainer-scripts = "debian/"
+assets = [
+    ["target/release/sys-switch", "usr/bin/sys-switch", "755"],
+    ["assets/sys-switch.desktop", "usr/share/applications/sys-switch.desktop", "644"],
+    ["build/icons/48x48/sys-switch.png", "usr/share/icons/hicolor/48x48/apps/sys-switch.png", "644"],
+    ["build/icons/128x128/sys-switch.png", "usr/share/icons/hicolor/128x128/apps/sys-switch.png", "644"],
+    ["build/icons/256x256/sys-switch.png", "usr/share/icons/hicolor/256x256/apps/sys-switch.png", "644"],
+]
