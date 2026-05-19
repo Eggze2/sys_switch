@@ -2,12 +2,13 @@
 
 use anyhow::{anyhow, Result};
 use std::env;
+#[cfg(target_os = "linux")]
 use std::process::Command;
 
 /// Check if the process needs elevation and attempt to elevate if needed.
 /// Returns `Ok(true)` if elevated instance was launched and current should exit.
 /// Returns `Ok(false)` if already elevated or elevation not needed.
-pub fn elevate_if_needed(want_gui: bool) -> Result<bool> {
+pub fn elevate_if_needed(_want_gui: bool) -> Result<bool> {
     if is_elevated() {
         return Ok(false);
     }

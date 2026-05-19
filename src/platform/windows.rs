@@ -366,7 +366,7 @@ impl BootManager for WindowsBootManager {
             }
         }
 
-        let fw_guid = fw_manager_guid.ok_or_else(|| anyhow!("Cannot find Firmware Boot Manager GUID"))?;;
+        let fw_guid = fw_manager_guid.ok_or_else(|| anyhow!("Cannot find Firmware Boot Manager GUID"))?;
 
         // Try bootsequence first
         let output = Command::new("bcdedit")
