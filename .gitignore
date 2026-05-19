@@ -6,3 +6,7 @@ build/
 *.spec
 .venv/
 *.egg-info/
+
+# Rust
+/target/
+Cargo.lock

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=sys-switch
+Comment=Switch next-boot operating system
+Exec=sys-switch
+Icon=sys-switch
+Terminal=false
+Categories=System;Utility;
+Keywords=boot;switch;efi;grub;uefi;
+StartupNotify=false
